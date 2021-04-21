@@ -34,4 +34,8 @@ public class Location {
 	public int getFile() {
 		return file;
 	}
+	
+	public String toString() {
+		return String.format("%c%d", 'a' + file, rank + 1);
+	}
 }
