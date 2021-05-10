@@ -8,6 +8,15 @@ package chess;
  *
  */
 public enum ColorType {
-	BLACK,
-	WHITE;
+	BLACK("b"),
+	WHITE("w");
+	
+	private final String symbol;
+	ColorType(String symbol) {
+		this.symbol = symbol;
+	}
+	
+	public String toString() {
+		return symbol;
+	}
 }

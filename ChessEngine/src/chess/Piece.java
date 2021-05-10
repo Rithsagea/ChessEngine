@@ -36,4 +36,9 @@ public class Piece {
 	public ColorType getColor() {
 		return color;
 	}
+	
+	public String toString() {
+		if(color == ColorType.WHITE) return type.toString().toUpperCase();
+		else return type.toString();
+	}
 }

@@ -8,12 +8,12 @@ package chess;
  * @author rithsagea
  */
 public enum PieceType {
-	KING("K"),
-	QUEEN("Q"),
-	BISHOP("B"),
-	KNIGHT("N"),
-	ROOK("R"),
-	PAWN("");
+	KING("k"),
+	QUEEN("q"),
+	BISHOP("b"),
+	KNIGHT("n"),
+	ROOK("r"),
+	PAWN("p");
 	
 	private final String symbol;
 	
