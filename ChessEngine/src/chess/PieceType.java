@@ -8,10 +8,20 @@ package chess;
  * @author rithsagea
  */
 public enum PieceType {
-	KING,
-	QUEEN,
-	BISHOP,
-	KNIGHT,
-	ROOK,
-	PAWN;
+	KING("K"),
+	QUEEN("Q"),
+	BISHOP("B"),
+	KNIGHT("N"),
+	ROOK("R"),
+	PAWN("");
+	
+	private final String symbol;
+	
+	PieceType(String symbol) {
+		this.symbol = symbol;
+	}
+	
+	public String toString() {
+		return symbol;
+	}
 }

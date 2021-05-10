@@ -17,6 +17,7 @@ public class Board {
 	};
 	
 	private Piece[][] board;
+	private ColorType sideToMove;
 	
 	//misc
 	private boolean whiteCastleKing = true;
@@ -26,6 +27,7 @@ public class Board {
 	
 	public Board() {
 		board = new Piece[MAX_RANKS][MAX_FILES];
+		sideToMove = ColorType.WHITE; //white moves first
 		
 		//setup board with default pieces
 		for(int x = 0; x < 8; x++) {
@@ -39,6 +41,10 @@ public class Board {
 	
 	public Piece getPiece(int rank, int file) {
 		return board[rank][file];
+	}
+	
+	public ColorType getSideToMove() {
+		return sideToMove;
 	}
 	
 	public boolean canCastleKing(ColorType color) {
