@@ -6,43 +6,53 @@ public class Board {
 	
 	public static final int MAX_RANKS = 8;
 	public static final int MAX_FILES = 8;
-	
-	private static final PieceType[] BACK_RANK = {
-			PieceType.ROOK,
-			PieceType.KNIGHT,
-			PieceType.BISHOP,
-			PieceType.KING,
-			PieceType.QUEEN,
-			PieceType.BISHOP,
-			PieceType.KNIGHT,
-			PieceType.ROOK
-	};
+	public static final String START_FEN = "rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR w KQkq - 0 0";
 	
 	private Piece[][] board;
 	private ColorType sideToMove;
 	
 	//misc
-	private boolean whiteCastleKing = true;
-	private boolean whiteCastleQueen = true;
-	private boolean blackCastleKing = true;
-	private boolean blackCastleQueen = true;
+	private boolean whiteCastleKing = false;
+	private boolean whiteCastleQueen = false;
+	private boolean blackCastleKing = false;
+	private boolean blackCastleQueen = false;
 	
 	private Move enPassant = null;
 	private int halfMoves = 0;
 	private int fullMoves = 0;
 	
 	public Board() {
+		this(START_FEN);
+	}
+	
+	public Board(String fen) {
 		board = new Piece[MAX_RANKS][MAX_FILES];
-		sideToMove = ColorType.WHITE; //white moves first
-		
-		//setup board with default pieces
-		for(int x = 0; x < 8; x++) {
-			board[0][x] = new Piece(BACK_RANK[x], ColorType.BLACK);
-			board[7][x] = new Piece(BACK_RANK[x], ColorType.WHITE);
-			
-			board[1][x] = new Piece(PieceType.PAWN, ColorType.BLACK);
-			board[6][x] = new Piece(PieceType.PAWN, ColorType.WHITE);
+		String[] data = fen.split("[ \\/]");
+		int f;
+		for(int r = 0; r < MAX_RANKS; r++) {
+			f = 0;
+			for(char c : data[r].toCharArray()) {
+				if(c >= '0' && c <= '9') {
+					f += c - '0';
+				} else {
+					board[r][f] = new Piece(c);
+					f++;
+				}
+			}
 		}
+		
+		if(data[8].equals("b")) sideToMove = ColorType.BLACK;
+		else sideToMove = ColorType.WHITE;
+		
+		if(data[9].contains("K")) whiteCastleKing = true;
+		if(data[9].contains("Q")) whiteCastleQueen = true;
+		if(data[9].contains("k")) blackCastleKing = true;
+		if(data[9].contains("q")) whiteCastleQueen = true;
+		
+		//en passant
+		
+		halfMoves = Integer.parseInt(data[11]);
+		fullMoves = Integer.parseInt(data[12]);
 	}
 	
 	public Piece getPiece(int rank, int file) {
@@ -103,14 +113,16 @@ public class Board {
 		b.append(' ');
 		b.append(board.getSideToMove());
 		
+		b.append(' ');
 		StringBuilder c = new StringBuilder();
 		if(board.canCastleKing(ColorType.WHITE)) c.append(PieceType.KING.toString().toUpperCase());
 		if(board.canCastleQueen(ColorType.WHITE)) c.append(PieceType.QUEEN.toString().toUpperCase());
 		if(board.canCastleKing(ColorType.BLACK)) c.append(PieceType.KING.toString());
 		if(board.canCastleQueen(ColorType.BLACK)) c.append(PieceType.QUEEN.toString());
 		if(c.length() > 0) {
-			b.append(' ');
 			b.append(c);
+		} else {
+			b.append('-');
 		}
 		
 		b.append(' ');

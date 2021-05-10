@@ -24,4 +24,17 @@ public enum PieceType {
 	public String toString() {
 		return symbol;
 	}
+	
+	public static PieceType getPiece(char c) {
+		switch(c) {
+			case 'k': return KING;
+			case 'q': return QUEEN;
+			case 'b': return BISHOP;
+			case 'n': return KNIGHT;
+			case 'r': return ROOK;
+			case 'p': return PAWN;
+		}
+		
+		return null;
+	}
 }

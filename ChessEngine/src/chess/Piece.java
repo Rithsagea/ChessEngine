@@ -21,6 +21,11 @@ public class Piece {
 		this.color = color;
 	}
 	
+	public Piece(char c) {
+		this.type = PieceType.getPiece(Character.toLowerCase(c));
+		this.color = Character.isUpperCase(c) ? ColorType.WHITE : ColorType.BLACK;
+	}
+	
 	/**
 	 * Gets the type of chess piece
 	 * @return the type of the piece
