@@ -18,12 +18,12 @@ public class ChessResources {
 		
 		int w = spriteSheet.width / 6;
 		int h = spriteSheet.height / 2;
-		
-		for(int x = 0; x < 2; x++) {
-			for(int y = 0; y < 6; y++) {
-				pieces[x][y] = app.createImage(w, h, PApplet.ARGB);
-				pieces[x][y].copy(spriteSheet, w * x, w * y, w, h, 0, 0, w, h);
-				pieces[x][y].resize(app.PIECE_WIDTH, app.PIECE_HEIGHT);
+	
+		for(int x = 0; x < 6; x++) {
+			for(int y = 0; y < 2; y++) {
+				pieces[y][x] = app.createImage(w, h, PApplet.ARGB);
+				pieces[y][x].copy(spriteSheet, w * x, w * y, w, h, 0, 0, w, h);
+				pieces[y][x].resize(app.PIECE_WIDTH, app.PIECE_HEIGHT);
 			}
 		}		
 	}
