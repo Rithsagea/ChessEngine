@@ -22,7 +22,7 @@ public class ChessResources {
 		for(int x = 0; x < 2; x++) {
 			for(int y = 0; y < 6; y++) {
 				pieces[x][y] = app.createImage(w, h, PApplet.ARGB);
-				pieces[x][y].copy(spriteSheet, w * y, w * x, w, h, 0, 0, w, h);
+				pieces[x][y].copy(spriteSheet, w * y, w * x, w, h, 10, 10, w, h);
 				pieces[x][y].resize(app.PIECE_WIDTH, app.PIECE_HEIGHT);
 			}
 		}		
