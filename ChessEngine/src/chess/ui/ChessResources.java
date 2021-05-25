@@ -20,7 +20,7 @@ public class ChessResources {
 		int h = spriteSheet.height / 2;
 	
 		for(int x = 1; x >= 0; x--) {
-			for(int y = 0; y < 6; y++) {
+			for(int y = 5; y >= 0; y--) {
 				pieces[x][y] = app.createImage(w, h, PApplet.ARGB);
 				pieces[x][y].copy(spriteSheet, w * y, w * x, w, h, 10, 10, w, h);
 				pieces[x][y].resize(app.PIECE_WIDTH, app.PIECE_HEIGHT);
