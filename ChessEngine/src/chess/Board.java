@@ -47,7 +47,7 @@ public class Board {
 		if(data[9].contains("K")) whiteCastleKing = true;
 		if(data[9].contains("Q")) whiteCastleQueen = true;
 		if(data[9].contains("k")) blackCastleKing = true;
-		if(data[9].contains("q")) whiteCastleQueen = true;
+		if(data[9].contains("q")) blackCastleQueen = true;
 		
 		//en passant
 		
@@ -63,19 +63,31 @@ public class Board {
 		return sideToMove;
 	}
 	
-	public boolean canCastleKing(ColorType color) {
-		if(color == ColorType.WHITE) {
-			return whiteCastleKing;
-		}
-		
+	/**
+	 * @return if the white player can castle king side
+	 */
+	public boolean whiteCastleKing() {
+		return whiteCastleKing;
+	}
+	
+	/**
+	 * @return if the white player can castle queen side
+	 */
+	public boolean whiteCastleQueen() {
+		return whiteCastleQueen;
+	}
+	
+	/**
+	 * @return if the black player can castle king side
+	 */
+	public boolean blackCastleKing() {
 		return blackCastleKing;
 	}
 	
-	public boolean canCastleQueen(ColorType color) {
-		if(color == ColorType.WHITE) {
-			return whiteCastleQueen;
-		}
-		
+	/**
+	 * @return if the black player can castle queen side
+	 */
+	public boolean blackCastleQueen() {
 		return blackCastleQueen;
 	}
 	
@@ -115,10 +127,10 @@ public class Board {
 		
 		b.append(' ');
 		StringBuilder c = new StringBuilder();
-		if(board.canCastleKing(ColorType.WHITE)) c.append(PieceType.KING.toString().toUpperCase());
-		if(board.canCastleQueen(ColorType.WHITE)) c.append(PieceType.QUEEN.toString().toUpperCase());
-		if(board.canCastleKing(ColorType.BLACK)) c.append(PieceType.KING.toString());
-		if(board.canCastleQueen(ColorType.BLACK)) c.append(PieceType.QUEEN.toString());
+		if(board.whiteCastleKing) c.append(PieceType.KING.toString().toUpperCase());
+		if(board.whiteCastleQueen) c.append(PieceType.QUEEN.toString().toUpperCase());
+		if(board.blackCastleKing) c.append(PieceType.KING.toString());
+		if(board.blackCastleQueen) c.append(PieceType.QUEEN.toString());
 		if(c.length() > 0) {
 			b.append(c);
 		} else {
