@@ -35,8 +35,8 @@ public class ChessApp extends PApplet {
 		image(rsc.getBackground(), 0, 0);
 		
 		Piece piece;
-		for(int x = 0; x < 8; x++) {
-			for(int y = 0; y < 8; y++) {
+		for(int x = 7; x >= 0; x--) {
+			for(int y = 7; y >= 0; y--) {
 				piece = board.getPiece(y, x);
 				if(piece != null)
 					image(rsc.getIcon(piece), WIDTH / 8 * x, HEIGHT / 8 * y);
