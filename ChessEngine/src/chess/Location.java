@@ -11,8 +11,8 @@ public class Location {
 	
 	/**
 	 * Creates a new Location at (rank, file)
-	 * @param rank the row of the location
-	 * @param file the column of the location
+	 * @param rank the row of the location (vertical)
+	 * @param file the column of the location (horizontal)
 	 */
 	public Location(int rank, int file) {
 		this.rank = rank;
@@ -21,7 +21,7 @@ public class Location {
 	
 	/**
 	 * Gets the rank of the location
-	 * @return the rank of the location
+	 * @return the rank of the location (vertical)
 	 */
 	public int getRank() {
 		return rank;
@@ -29,7 +29,7 @@ public class Location {
 	
 	/**
 	 * Gets the file of the location
-	 * @return the file of the location
+	 * @return the file of the location (horizontal)
 	 */
 	public int getFile() {
 		return file;
@@ -37,5 +37,9 @@ public class Location {
 	
 	public String toString() {
 		return String.format("%c%d", 'a' + file, rank + 1);
+	}
+	
+	public static Location fromString(String str) {
+		return new Location(str.charAt(1) - '0', str.charAt(0) - 'a');
 	}
 }
