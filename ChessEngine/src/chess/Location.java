@@ -15,6 +15,10 @@ public class Location {
 	 * @param file the column of the location (horizontal)
 	 */
 	public Location(int rank, int file) {
+		if(rank < 0 || rank > 7)
+			throw new RuntimeException("Invalid Rank Number");
+		if(file < 0 || file > 7)
+			throw new RuntimeException("Invalid File Number");
 		this.rank = rank;
 		this.file = file;
 	}
@@ -39,7 +43,16 @@ public class Location {
 		return String.format("%c%d", 'a' + file, rank + 1);
 	}
 	
+	/**
+	 * Initializes a new location from notation
+	 * @param str the location notation
+	 * @return
+	 */
 	public static Location fromString(String str) {
-		return new Location(str.charAt(1) - '0', str.charAt(0) - 'a');
+		try {
+			return new Location(str.charAt(1) - '0', str.charAt(0) - 'a');
+		} catch(Exception e) {
+			return null;
+		}
 	}
 }

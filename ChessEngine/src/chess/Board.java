@@ -17,7 +17,7 @@ public class Board {
 	private boolean blackCastleKing = false;
 	private boolean blackCastleQueen = false;
 	
-	private Move enPassant = null;
+	private Location enPassant = null;
 	private int halfMoves = 0;
 	private int fullMoves = 0;
 	
@@ -56,7 +56,7 @@ public class Board {
 		if(data[9].contains("k")) blackCastleKing = true;
 		if(data[9].contains("q")) blackCastleQueen = true;
 		
-		//en passant
+		enPassant = Location.fromString(data[10]);
 		
 		halfMoves = Integer.parseInt(data[11]);
 		fullMoves = Integer.parseInt(data[12]);
@@ -120,10 +120,10 @@ public class Board {
 	}
 	
 	/**
-	 * Returns the square which
-	 * @return
+	 * Returns the location for the next player's en passant
+	 * @return a location (null if not a double pawn move)
 	 */
-	public Move getEnPassant() {
+	public Location getEnPassant() {
 		return enPassant;
 	}
 	
@@ -131,6 +131,11 @@ public class Board {
 		return toFen(this);
 	}
 	
+	/**
+	 * Converts a chess board into FEN notation
+	 * @param board the board to convert
+	 * @return the FEN notation
+	 */
 	public static String toFen(Board board) {
 		StringBuilder b = new StringBuilder();
 		
