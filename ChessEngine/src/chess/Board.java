@@ -21,10 +21,17 @@ public class Board {
 	private int halfMoves = 0;
 	private int fullMoves = 0;
 	
+	/**
+	 * Initializes a new board from the default starting position
+	 */
 	public Board() {
 		this(START_FEN);
 	}
 	
+	/**
+	 * Initializes a new board from the provided FEN notation
+	 * @param fen the notation for the board
+	 */
 	public Board(String fen) {
 		board = new Piece[MAX_RANKS][MAX_FILES];
 		String[] data = fen.split("[ \\/]");
@@ -55,10 +62,31 @@ public class Board {
 		fullMoves = Integer.parseInt(data[12]);
 	}
 	
-	public Piece getPiece(int rank, int file) {
-		return board[rank][file];
+	/**
+	 * Gets the piece from a specified rank and file
+	 * @param rank the rank of the piece (vertical)
+	 * @param file the file of the piece (horizontal)
+	 * @return the piece
+	 */
+	public Piece getPiece(Location loc) {
+		return board[loc.getRank()][loc.getFile()];
 	}
 	
+	//TODO: add moves
+	/**
+	 * Sets the piece for a specified square
+	 * @param rank the rank of the square (vertical)
+	 * @param file the file of the square (horizontal)
+	 * @param piece the piece to set the square to
+	 */
+	public void setPiece(Location loc, Piece piece) {
+		board[loc.getRank()][loc.getFile()] = piece;
+	}
+	
+	/**
+	 * Gets which side should make the next move
+	 * @return the side to move
+	 */
 	public ColorType getSideToMove() {
 		return sideToMove;
 	}
@@ -91,6 +119,10 @@ public class Board {
 		return blackCastleQueen;
 	}
 	
+	/**
+	 * Returns the square which
+	 * @return
+	 */
 	public Move getEnPassant() {
 		return enPassant;
 	}
@@ -107,7 +139,7 @@ public class Board {
 		for(int r = 0; r < Board.MAX_RANKS; r++) {
 			e = 0;
 			for(int f = 0; f < Board.MAX_FILES; f++) {
-				p = board.getPiece(r, f);
+				p = board.getPiece(new Location(r, f));
 				if(p == null) {
 					e++;
 				} else {
