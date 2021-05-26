@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.ArrayList;
+
 public class Board {
 	
 	public static final int MAX_RANKS = 8;
@@ -8,6 +10,7 @@ public class Board {
 	
 	private Piece[][] board;
 	private ColorType sideToMove;
+	private ArrayList<Move> movesMade;
 	
 	//misc
 	private boolean whiteCastleKing = false;
@@ -32,6 +35,8 @@ public class Board {
 	 */
 	public Board(String fen) {
 		board = new Piece[MAX_RANKS][MAX_FILES];
+		movesMade = new ArrayList<>();
+		
 		String[] data = fen.split("[ \\/]");
 		int f;
 		for(int r = 0; r < MAX_RANKS; r++) {
@@ -70,7 +75,20 @@ public class Board {
 		return board[loc.getRank()][loc.getFile()];
 	}
 	
-	//TODO: add moves
+	/**
+	 * Get piece which returns null if there is an error
+	 * @param rank the rank of the piece
+	 * @param file the file of the piece
+	 * @return the piece gotten or null if the location is invalid
+	 */
+	public Piece getPiece(int rank, int file) {
+		try {
+			return getPiece(new Location(rank, file));
+		} catch (RuntimeException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * Sets the piece for a specified square
 	 * @param rank the rank of the square (vertical)
@@ -125,6 +143,132 @@ public class Board {
 		return enPassant;
 	}
 	
+	public boolean isCheck(ColorType color) {
+		for(int rank = 0; rank < MAX_RANKS; rank++) {
+			for(int file = 0; file < MAX_FILES; file++) {
+				if(board[rank][file].getType() == PieceType.KING &&
+						board[rank][file].getColor() == color) {
+					//vertical horizontal
+					if(isCheckSideways(color, rank, file)) return true;
+					if(isCheckDiagonal(color, rank, file)) return true;
+					if(isCheckKnight(color, rank, file)) return true;
+					if(isCheckMisc(color, rank, file)) return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	//helper methods for detecting check
+	private boolean isCheckSideways(ColorType color, int rank, int file) {
+		for(int i = rank + 1; i < MAX_RANKS; i++) {
+			if(board[i][file] != null) {
+				if(board[i][file].getColor() == color) break;
+				if(board[i][file].getType() == PieceType.ROOK ||
+				   board[i][file].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		for(int i = rank - 1; i >= 0; i--) {
+			if(board[i][file] != null) {
+				if(board[i][file].getColor() == color) break;
+				if(board[i][file].getType() == PieceType.ROOK ||
+				   board[i][file].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		for(int i = file + 1; i < MAX_FILES; i++) {
+			if(board[rank][i] != null) {
+				if(board[rank][i].getColor() == color) break;
+				if(board[rank][i].getType() == PieceType.ROOK ||
+				   board[rank][i].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		for(int i = file - 1; i >= 0; i--) {
+			if(board[rank][i] != null) {
+				if(board[rank][i].getColor() == color) break;
+				if(board[rank][i].getType() == PieceType.ROOK ||
+				   board[rank][i].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean isCheckDiagonal(ColorType color, int rank, int file) {
+		for(int i = rank + 1, j = file + 1; i < MAX_RANKS && j < MAX_FILES; i++, j++) {
+			if(board[i][j] != null) {
+				if(board[i][j].getColor() == color) break;
+				if(board[i][j].getType() == PieceType.BISHOP ||
+				   board[i][j].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		for(int i = rank + 1, j = file - 1; i < MAX_RANKS && j >= 0; i++, j--) {
+			if(board[i][j] != null) {
+				if(board[i][j].getColor() == color) break;
+				if(board[i][j].getType() == PieceType.BISHOP ||
+				   board[i][j].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		for(int i = rank - 1, j = file + 1; i >= 0 && j < MAX_FILES; i--, j++) {
+			if(board[i][j] != null) {
+				if(board[i][j].getColor() == color) break;
+				if(board[i][j].getType() == PieceType.BISHOP ||
+				   board[i][j].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		for(int i = rank - 1, j = file - 1; i >= 0 && j >= 0; i--, j--) {
+			if(board[i][j] != null) {
+				if(board[i][j].getColor() == color) break;
+				if(board[i][j].getType() == PieceType.BISHOP ||
+				   board[i][j].getType() == PieceType.QUEEN) return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean isCheckKnight(ColorType color, int rank, int file) {
+		if(checkPiece(color, PieceType.KNIGHT, rank + 2, file + 1)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank - 2, file + 1)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank + 2, file - 1)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank - 2, file - 1)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank + 1, file + 2)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank - 1, file + 2)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank + 1, file - 2)) return true;
+		if(checkPiece(color, PieceType.KNIGHT, rank - 1, file - 2)) return true;
+		
+		
+		return false;
+	}
+	
+	private boolean isCheckMisc(ColorType color, int rank, int file) {
+		if(checkPiece(color, PieceType.KING, rank + 1, file + 1)) return true;
+		if(checkPiece(color, PieceType.KING, rank - 1, file + 1)) return true;
+		if(checkPiece(color, PieceType.KING, rank + 1, file - 1)) return true;
+		if(checkPiece(color, PieceType.KING, rank - 1, file - 1)) return true;
+		if(checkPiece(color, PieceType.KING, rank, file + 1)) return true;
+		if(checkPiece(color, PieceType.KING, rank, file - 1)) return true;
+		if(checkPiece(color, PieceType.KING, rank + 1, file)) return true;
+		if(checkPiece(color, PieceType.KING, rank - 1, file)) return true;
+		
+		if(checkPiece(color, PieceType.PAWN, rank + (color == ColorType.WHITE ? 1 : -1), file + 1)) return true;
+		if(checkPiece(color, PieceType.PAWN, rank + (color == ColorType.WHITE ? 1 : -1), file - 1)) return true;
+		
+		return false;
+	}
+	
+	private boolean checkPiece(ColorType color, PieceType type, int rank, int file) {
+		Piece piece = getPiece(rank, file);
+		
+		return piece != null && piece.getColor() != color && piece.getType() == type;
+	}
+	
 	/**
 	 * Makes a move on the chess board
 	 * @param move the move to make
@@ -144,6 +288,8 @@ public class Board {
 			fullMoves++;
 			sideToMove = ColorType.WHITE;
 		}
+		
+		movesMade.add(move);
 		
 		return true;
 	}
