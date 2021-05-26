@@ -6,7 +6,8 @@ import chess.Piece;
 import processing.core.PApplet;
 
 public class ChessApp extends PApplet {
-	
+	//TODO flip board so that white is on bottom
+	//TODO when a box is clicked give the file and rank
 	public final int WIDTH = 800;
 	public final int HEIGHT = 800;
 	
