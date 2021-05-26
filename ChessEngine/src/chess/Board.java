@@ -1,7 +1,5 @@
 package chess;
 
-import chess.move.Move;
-
 public class Board {
 	
 	public static final int MAX_RANKS = 8;
@@ -127,6 +125,29 @@ public class Board {
 		return enPassant;
 	}
 	
+	/**
+	 * Makes a move on the chess board
+	 * @param move the move to make
+	 * @return whether the move was successfully made
+	 */
+	public boolean makeMove(Move move) {
+		if(!move.isLegal()) return false;
+		
+		move.executeMove(this);
+		
+		if(move.getCapture() != null) halfMoves = 0;
+		else halfMoves++;
+		
+		if(sideToMove == ColorType.WHITE) {
+			sideToMove = ColorType.BLACK;
+		} else {
+			fullMoves++;
+			sideToMove = ColorType.WHITE;
+		}
+		
+		return true;
+	}
+	
 	public String toString() {
 		return toFen(this);
 	}
@@ -183,4 +204,5 @@ public class Board {
 		
 		return b.toString();
 	}
+
 }
