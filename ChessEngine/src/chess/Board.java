@@ -146,7 +146,8 @@ public class Board {
 	public boolean isCheck(ColorType color) {
 		for(int rank = 0; rank < MAX_RANKS; rank++) {
 			for(int file = 0; file < MAX_FILES; file++) {
-				if(board[rank][file].getType() == PieceType.KING &&
+				if(board[rank][file] != null && 
+						board[rank][file].getType() == PieceType.KING &&
 						board[rank][file].getColor() == color) {
 					//vertical horizontal
 					if(isCheckSideways(color, rank, file)) return true;
@@ -257,8 +258,8 @@ public class Board {
 		if(checkPiece(color, PieceType.KING, rank + 1, file)) return true;
 		if(checkPiece(color, PieceType.KING, rank - 1, file)) return true;
 		
-		if(checkPiece(color, PieceType.PAWN, rank + (color == ColorType.WHITE ? 1 : -1), file + 1)) return true;
-		if(checkPiece(color, PieceType.PAWN, rank + (color == ColorType.WHITE ? 1 : -1), file - 1)) return true;
+		if(checkPiece(color, PieceType.PAWN, rank + (color == ColorType.WHITE ? -1 : 1), file + 1)) return true;
+		if(checkPiece(color, PieceType.PAWN, rank + (color == ColorType.WHITE ? -1 : 1), file - 1)) return true;
 		
 		return false;
 	}
