@@ -19,4 +19,11 @@ public enum ColorType {
 	public String toString() {
 		return symbol;
 	}
+	
+	public static ColorType getInverse(ColorType color) {
+		if(color == BLACK) return WHITE;
+		if(color == WHITE) return BLACK;
+		
+		return null;
+	}
 }
