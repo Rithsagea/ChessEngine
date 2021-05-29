@@ -136,6 +136,14 @@ public class Board {
 	}
 	
 	/**
+	 * Sets the location for the next player's en passant
+	 * @param loc a location (null if not a double pawn move)
+	 */
+	public void setEnPassant(Location loc) {
+		enPassant = loc;
+	}
+	
+	/**
 	 * Returns the location for the next player's en passant
 	 * @return a location (null if not a double pawn move)
 	 */
@@ -268,6 +276,18 @@ public class Board {
 		Piece piece = getPiece(rank, file);
 		
 		return piece != null && piece.getColor() != color && piece.getType() == type;
+	}
+	
+	/**
+	 * Gets a list of all valid moves
+	 * @return
+	 */
+	public ArrayList<Move> getValidMoves() {
+		ArrayList<Move> moves = new ArrayList<>();
+		
+		
+		
+		return moves;
 	}
 	
 	/**
