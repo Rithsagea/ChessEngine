@@ -3,8 +3,7 @@ package chess;
 public class Move {
 
 	private boolean legal;
-	private boolean check;
-	private boolean mate;
+	private boolean enPassant;
 	private Piece capture;
 	private Piece piece;
 	private Location start;
@@ -15,28 +14,26 @@ public class Move {
 	 * 
 	 * TODO: Make it so that it automatically detects check captures and mate
 	 * 
-	 * @param check		whether this move results in a check
-	 * @param mate		whether this move results in checkmate
 	 * @param piece		the piece that is moving
 	 * @param start		where the piece starts from
 	 * @param end		where the piece ends up
+	 * @param enPassant	if this move is a double pawn move
 	 */
-	public Move(boolean check, boolean mate, Piece piece, Location start, Location end, Board board) {
-		this.check = check;
-		this.mate = mate;
+	public Move(Piece piece, Location start, Location end, Board board, boolean enPassant) {
 		this.piece = piece;
 		this.start = start;
 		this.end = end;
+		this.enPassant = enPassant;
 		
 		capture = board.getPiece(end);
-		legal = false; // TODO: fix this
-	}
-	
-	/**
-	 * @return whether this move results in a check
-	 */
-	public boolean isCheck() {
-		return check;
+		
+		//try the move to see if it results in own king in check
+		board.setPiece(end, board.getPiece(start));
+		board.setPiece(start, null);
+		
+		legal = board.isCheck(board.getSideToMove());
+		board.setPiece(end, capture);
+		board.setPiece(start, piece);
 	}
 	
 	/**
@@ -44,13 +41,6 @@ public class Move {
 	 */
 	public Piece getCapture() {
 		return capture;
-	}
-	
-	/**
-	 * @return whether this move results in checkmate
-	 */
-	public boolean isMate() {
-		return mate;
 	}
 	
 	/**
@@ -79,8 +69,8 @@ public class Move {
 	 * @return this move's notation
 	 */
 	public String getNotation() {
-		return piece.toString() + start + (capture != null ? "x" : "-") + end
-				+ (check ? "+" : (mate ? "#" : null)); //TODO: redo this later lol
+		return piece.toString() + start + (capture != null ? "x" : "-") + end; 
+		//TODO: add '+' for check and '#' for mate
 	}
 	
 	/**
@@ -91,16 +81,28 @@ public class Move {
 	}
 	
 	/**
+	 * @return if this move is a double pawn move
+	 */
+	public boolean isEnPassant() {
+		return enPassant;
+	}
+	
+	/**
 	 * Executes this move on the board passed in
 	 * @param board the board to make this move on
 	 */
 	public void executeMove(Board board) {
 		board.setPiece(end, board.getPiece(start));
 		board.setPiece(start, null);
-	}
-	
-	public void takebackMove(Board board) {
-		board.setPiece(end, capture);
-		board.setPiece(start, piece);
+		
+		if(enPassant) {
+			if(piece.getColor() == ColorType.WHITE) 
+				board.setEnPassant(new Location(start.getRank(), 5));
+			if(piece.getColor() == ColorType.BLACK)
+				board.setEnPassant(new Location(start.getRank(), 2));
+		} else {
+			board.setEnPassant(null);
+		}
+		
 	}
 }
