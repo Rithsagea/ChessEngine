@@ -46,5 +46,6 @@ public class ChessApp extends PApplet {
 					image(rsc.getIcon(piece), WIDTH / 8 * x, HEIGHT / 8 * y);
 			}
 		}
+		
 	}
 }

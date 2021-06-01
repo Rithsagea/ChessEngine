@@ -3,15 +3,13 @@ package chess.ui;
 import chess.Piece;
 import processing.core.PApplet;
 import processing.core.PImage;
-import chess.Location;
 
-public class ChessResources extends PApplet{
+public class ChessResources{
 	
 	private PImage spriteSheet;
 	private PImage background;
 	
 	private PImage[][] pieces = new PImage[2][6];
-	private Location[][] boardValues = new Location[8][8];
 	
 	public ChessResources(ChessApp app) {
 		spriteSheet = app.loadImage("resources/chess.png");
@@ -28,13 +26,6 @@ public class ChessResources extends PApplet{
 				pieces[x][y].resize(app.PIECE_WIDTH, app.PIECE_HEIGHT);
 			}
 		}		
-		
-//		for(int r = 0; r < 8; r++) {
-//			for(int c = 0; c < 8; c++) {
-//				boardValues[r][c] = new Location()
-//			}
-//		}
-		System.out.println(boardValues.toString());
 	}
 	
 	public PImage getIcon(Piece piece) {
@@ -43,9 +34,5 @@ public class ChessResources extends PApplet{
 	
 	public PImage getBackground() {
 		return background;
-	}
-	
-	public Location getLocation() {
-		
 	}
 }
