@@ -19,12 +19,12 @@ public class Move {
 	 * @param end		where the piece ends up
 	 * @param enPassant	if this move is a double pawn move
 	 */
-	public Move(Piece piece, Location start, Location end, Board board, boolean enPassant) {
-		this.piece = piece;
+	public Move(Board board, Location start, Location end, boolean enPassant) {
 		this.start = start;
 		this.end = end;
 		this.enPassant = enPassant;
 		
+		piece = board.getPiece(start);
 		capture = board.getPiece(end);
 		
 		//try the move to see if it results in own king in check

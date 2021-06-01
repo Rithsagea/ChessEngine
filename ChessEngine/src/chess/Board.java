@@ -285,9 +285,148 @@ public class Board {
 	public ArrayList<Move> getValidMoves() {
 		ArrayList<Move> moves = new ArrayList<>();
 		
-		
+		for(int rank = 0; rank < MAX_RANKS; rank++) {
+			for(int file = 0; file < MAX_FILES; file++) {
+				if(board[rank][file] != null &&
+				   board[rank][file].getColor() == sideToMove) {
+					switch(board[rank][file].getType()) {
+						case KING:
+							break;
+						case QUEEN:
+							getBishopMove(new Location(rank, file), moves);
+							getRookMove(new Location(rank, file), moves);
+							break;
+						case BISHOP:
+							getBishopMove(new Location(rank, file), moves);
+							break;
+						case KNIGHT:
+							getKnightMove(new Location(rank, file), moves);
+							break;
+						case ROOK:
+							getRookMove(new Location(rank, file), moves);
+							break;
+						case PAWN:
+							getPawnMove(new Location(rank, file), moves);
+							break;
+					}
+				}
+			}
+		}
 		
 		return moves;
+	}
+	
+	//helper methods to get moves
+	private void getBishopMove(Location loc, ArrayList<Move> moves) {
+		for(int r = loc.getRank() - 1, f = loc.getFile() - 1; r >= 0 && f >= 0; r--, f--) {
+			if(board[r][f] == null) {
+				moves.add(new Move(this,  loc, new Location(r, f), false));
+			} else {
+				if(board[r][f].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(r, f), false));
+					break;
+				}
+			}
+		}
+		
+		for(int r = loc.getRank() + 1, f = loc.getFile() + 1; r < MAX_RANKS && f < MAX_FILES; r++, f++) {
+			if(board[r][f] == null) {
+				moves.add(new Move(this,  loc, new Location(r, f), false));
+			} else {
+				if(board[r][f].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(r, f), false));
+					break;
+				}
+			}
+		}
+		
+		for(int r = loc.getRank() - 1, f = loc.getFile() + 1; r >= 0 && f < MAX_FILES; r--, f++) {
+			if(board[r][f] == null) {
+				moves.add(new Move(this,  loc, new Location(r, f), false));
+			} else {
+				if(board[r][f].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(r, f), false));
+					break;
+				}
+			}
+		}
+		
+		for(int r = loc.getRank() + 1, f = loc.getFile() - 1; r < MAX_RANKS && f >= 0; r++, f--) {
+			if(board[r][f] == null) {
+				moves.add(new Move(this,  loc, new Location(r, f), false));
+			} else {
+				if(board[r][f].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(r, f), false));
+					break;
+				}
+			}
+		}
+	}
+	
+	private void getRookMove(Location loc, ArrayList<Move> moves) {
+		for(int r = loc.getRank() - 1; r >= 0; r--) {
+			if(board[r][loc.getFile()] == null) {
+				moves.add(new Move(this,  loc, new Location(r, loc.getFile()), false));
+			} else {
+				if(board[r][loc.getFile()].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(r, loc.getFile()), false));
+					break;
+				}
+			}
+		}
+		
+		for(int r = loc.getRank() + 1; r < MAX_RANKS; r++) {
+			if(board[r][loc.getFile()] == null) {
+				moves.add(new Move(this,  loc, new Location(r, loc.getFile()), false));
+			} else {
+				if(board[r][loc.getFile()].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(r, loc.getFile()), false));
+					break;
+				}
+			}
+		}
+		
+		for(int f = loc.getFile() - 1; f >= 0; f--) {
+			if(board[loc.getRank()][f] == null) {
+				moves.add(new Move(this,  loc, new Location(loc.getRank(), f), false));
+			} else {
+				if(board[loc.getRank()][f].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(loc.getRank(), f), false));
+					break;
+				}
+			}
+		}
+		
+		for(int f = loc.getFile() + 1; f < MAX_FILES; f++) {
+			if(board[loc.getRank()][f] == null) {
+				moves.add(new Move(this,  loc, new Location(loc.getRank(), f), false));
+			} else {
+				if(board[loc.getRank()][f].getColor() != sideToMove) {
+					moves.add(new Move(this, loc, new Location(loc.getRank(), f), false));
+					break;
+				}
+			}
+		}
+	}
+	
+	private void getKnightMove(Location loc, ArrayList<Move> moves) {
+		moves.add(new Move(this, loc, new Location(loc.getRank() + 2, loc.getFile() + 1), false));
+		moves.add(new Move(this, loc, new Location(loc.getRank() - 2, loc.getFile() + 1), false));
+		moves.add(new Move(this, loc, new Location(loc.getRank() + 2, loc.getFile() - 1), false));
+		moves.add(new Move(this, loc, new Location(loc.getRank() - 2, loc.getFile() - 1), false));
+		
+		moves.add(new Move(this, loc, new Location(loc.getRank() + 1, loc.getFile() + 2), false));
+		moves.add(new Move(this, loc, new Location(loc.getRank() - 1, loc.getFile() + 2), false));
+		moves.add(new Move(this, loc, new Location(loc.getRank() + 1, loc.getFile() - 2), false));
+		moves.add(new Move(this, loc, new Location(loc.getRank() - 1, loc.getFile() - 2), false));
+	}
+	
+	private void getPawnMove(Location loc, ArrayList<Move> moves) {
+		if(sideToMove == ColorType.WHITE) {
+			
+		} else {
+			
+		}
 	}
 	
 	/**
