@@ -47,5 +47,26 @@ public class ChessApp extends PApplet {
 			}
 		}
 		
+		String locAsString = "";
+		
+		int r = 0, f = 0;
+		
+		Location loc = new Location(r, f);
+		for(int i = 0; i < 800; i += 100) {
+			f = 0;
+			for(int j = 0; j < 800; j += 100) { 
+				if(mouseX >= i && mouseX <= i + 100) {
+					if(mouseY >= j && mouseY <= j + 100) {
+						loc = new Location(r, f);
+						locAsString = loc.toString();
+					}
+				}
+				f++;
+			}
+			r++;
+		}
+		
+		textSize(30);
+		text(locAsString, mouseX, mouseY);
 	}
 }
