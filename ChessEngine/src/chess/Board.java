@@ -288,6 +288,7 @@ public class Board {
 				   board[rank][file].getColor() == sideToMove) {
 					switch(board[rank][file].getType()) {
 						case KING:
+							getKingMove(new Location(rank, file), moves);
 							break;
 						case QUEEN:
 							getBishopMove(new Location(rank, file), moves);
@@ -310,6 +311,13 @@ public class Board {
 			}
 		}
 		
+		for(int m = 0; m < moves.size(); m++) {
+			if(!moves.get(m).isLegal()) {
+				moves.remove(m);
+				m--;
+			}
+		}
+		
 		return moves;
 	}
 	
@@ -321,8 +329,8 @@ public class Board {
 			} else {
 				if(board[r][f].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(r, f), false));
-					break;
 				}
+				break;
 			}
 		}
 		
@@ -332,8 +340,8 @@ public class Board {
 			} else {
 				if(board[r][f].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(r, f), false));
-					break;
 				}
+				break;
 			}
 		}
 		
@@ -343,8 +351,8 @@ public class Board {
 			} else {
 				if(board[r][f].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(r, f), false));
-					break;
 				}
+				break;
 			}
 		}
 		
@@ -354,8 +362,8 @@ public class Board {
 			} else {
 				if(board[r][f].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(r, f), false));
-					break;
 				}
+				break;
 			}
 		}
 	}
@@ -367,8 +375,8 @@ public class Board {
 			} else {
 				if(board[r][loc.getFile()].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(r, loc.getFile()), false));
-					break;
 				}
+				break;
 			}
 		}
 		
@@ -378,8 +386,8 @@ public class Board {
 			} else {
 				if(board[r][loc.getFile()].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(r, loc.getFile()), false));
-					break;
 				}
+				break;
 			}
 		}
 		
@@ -389,8 +397,8 @@ public class Board {
 			} else {
 				if(board[loc.getRank()][f].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(loc.getRank(), f), false));
-					break;
 				}
+				break;
 			}
 		}
 		
@@ -400,8 +408,8 @@ public class Board {
 			} else {
 				if(board[loc.getRank()][f].getColor() != sideToMove) {
 					moves.add(new Move(this, loc, new Location(loc.getRank(), f), false));
-					break;
 				}
+				break;
 			}
 		}
 	}
@@ -420,31 +428,44 @@ public class Board {
 	
 	private void getPawnMove(Location loc, ArrayList<Move> moves) {
 		if(sideToMove == ColorType.WHITE) {
-			if(getPiece(loc.add(0, -1)) == null) {
-				moves.add(new Move(this, loc, loc.add(0, -1), false));
-				if(loc.getFile() == 6 && getPiece(loc.add(0, -2)) == null) {
-					moves.add(new Move(this, loc, loc.add(0, -2), true)); // en pesant
+			if(getPiece(loc.add(-1, 0)) == null) {
+				moves.add(new Move(this, loc, loc.add(-1, 0), false));
+				if(loc.getRank() == 6 && getPiece(loc.add(-2, 0)) == null) {
+					moves.add(new Move(this, loc, loc.add(-2, 0), true)); // en pesant
 				}
 			}
 			
 			//captures sideways
+			if(checkPiece(sideToMove, loc.add(-1, 1)))
+				moves.add(new Move(this, loc, loc.add(-1, 1), false));
 			if(checkPiece(sideToMove, loc.add(-1, -1)))
 				moves.add(new Move(this, loc, loc.add(-1, -1), false));
-			if(checkPiece(sideToMove, loc.add(1, -1)))
-				moves.add(new Move(this, loc, loc.add(1, -1), false));
 		} else {
 			if(getPiece(loc.add(0, 1)) == null) {
-				moves.add(new Move(this, loc, loc.add(0, 1), false));
-				if(loc.getFile() == 6 && getPiece(loc.add(0, 2)) == null) {
-					moves.add(new Move(this, loc, loc.add(0, 2), true)); // en pesant
+				moves.add(new Move(this, loc, loc.add(1, 0), false));
+				if(loc.getRank() == 6 && getPiece(loc.add(2, 0)) == null) {
+					moves.add(new Move(this, loc, loc.add(2, 0), true)); // en pesant
 				}
 			}
 			
-			if(checkPiece(sideToMove, loc.add(-1, 1)))
-				moves.add(new Move(this, loc, loc.add(-1, 1), false));
 			if(checkPiece(sideToMove, loc.add(1, 1)))
 				moves.add(new Move(this, loc, loc.add(1, 1), false));
+			if(checkPiece(sideToMove, loc.add(1, -1)))
+				moves.add(new Move(this, loc, loc.add(1, -1), false));
 		}
+	}
+	
+	private void getKingMove(Location loc, ArrayList<Move> moves) {
+		moves.add(new Move(this, loc, loc.add(0, 1), false));
+		moves.add(new Move(this, loc, loc.add(0, -1), false));
+		moves.add(new Move(this, loc, loc.add(1, 0), false));
+		moves.add(new Move(this, loc, loc.add(-1, 0), false));
+		moves.add(new Move(this, loc, loc.add(1, 1), false));
+		moves.add(new Move(this, loc, loc.add(1, -1), false));
+		moves.add(new Move(this, loc, loc.add(-1, 1), false));
+		moves.add(new Move(this, loc, loc.add(-1, -1), false));
+		
+		//TODO: Castling
 	}
 	
 	private boolean checkPiece(ColorType type, Location loc) {

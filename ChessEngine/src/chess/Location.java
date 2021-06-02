@@ -46,11 +46,11 @@ public class Location {
 	}
 	
 	public boolean isValid() {
-		return rank < 0 || rank > 7 || file < 0 || file > 7;
+		return !(rank < 0 || rank > 7 || file < 0 || file > 7);
 	}
 	
 	public String toString() {
-		return String.format("%c%d", 'a' + file, rank + 1);
+		return String.format("%c%d", 'h' - file, 8 - rank);
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class Location {
 	 */
 	public static Location fromString(String str) {
 		try {
-			return new Location('8' - str.charAt(1), str.charAt(0) - 'a');
+			return new Location(str.charAt(1) + '0', str.charAt(0) - 'a');
 		} catch(Exception e) {
 			return null;
 		}

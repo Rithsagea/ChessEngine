@@ -27,7 +27,8 @@ public class Move {
 		piece = board.getPiece(start);
 		capture = board.getPiece(end);
 		
-		if(!(start.isValid() && end.isValid())) {
+		if((piece != null && capture != null && capture.getColor() == piece.getColor()) ||
+				!(start.isValid() && end.isValid())) {
 			legal = false;
 			return;
 		}
@@ -36,7 +37,7 @@ public class Move {
 		board.setPiece(end, board.getPiece(start));
 		board.setPiece(start, null);
 		
-		legal = board.isCheck(board.getSideToMove());
+		legal = !board.isCheck(board.getSideToMove());
 		board.setPiece(end, capture);
 		board.setPiece(start, piece);
 	}
@@ -74,7 +75,8 @@ public class Move {
 	 * @return this move's notation
 	 */
 	public String getNotation() {
-		return piece.getType().toString() + start + (capture != null ? "x" : "-") + end; 
+		return (piece.getType() == PieceType.PAWN ? "" : piece.getType().toString().toUpperCase())
+				+ start + (capture != null ? "x" : "-") + end; 
 		//TODO: add '+' for check and '#' for mate
 	}
 	
