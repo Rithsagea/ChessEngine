@@ -1,7 +1,10 @@
 package test.chess;
 
+import java.util.ArrayList;
+
 import chess.Board;
 import chess.Location;
+import chess.Move;
 import chess.Piece;
 
 public class BoardTest {
@@ -18,5 +21,11 @@ public class BoardTest {
 		System.out.println();
 		System.out.println(board);
 		System.out.println("Is Check: " + board.isCheck(board.getSideToMove()));
+		
+		ArrayList<Move> moves = board.getValidMoves();
+		
+		for(Move move : moves) {
+			System.out.println(move);
+		}
 	}
 }

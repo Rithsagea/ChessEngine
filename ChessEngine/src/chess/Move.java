@@ -27,6 +27,11 @@ public class Move {
 		piece = board.getPiece(start);
 		capture = board.getPiece(end);
 		
+		if(!(start.isValid() && end.isValid())) {
+			legal = false;
+			return;
+		}
+		
 		//try the move to see if it results in own king in check
 		board.setPiece(end, board.getPiece(start));
 		board.setPiece(start, null);
@@ -69,7 +74,7 @@ public class Move {
 	 * @return this move's notation
 	 */
 	public String getNotation() {
-		return piece.toString() + start + (capture != null ? "x" : "-") + end; 
+		return piece.getType().toString() + start + (capture != null ? "x" : "-") + end; 
 		//TODO: add '+' for check and '#' for mate
 	}
 	
@@ -102,7 +107,10 @@ public class Move {
 				board.setEnPassant(new Location(start.getRank(), 2));
 		} else {
 			board.setEnPassant(null);
-		}
-		
+		}	
+	}
+	
+	public String toString() {
+		return getNotation();
 	}
 }

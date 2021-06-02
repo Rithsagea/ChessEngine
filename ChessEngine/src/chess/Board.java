@@ -72,6 +72,7 @@ public class Board {
 	 * @return the piece
 	 */
 	public Piece getPiece(Location loc) {
+		if(!loc.isValid()) return null;
 		return board[loc.getRank()][loc.getFile()];
 	}
 	
@@ -82,11 +83,7 @@ public class Board {
 	 * @return the piece gotten or null if the location is invalid
 	 */
 	public Piece getPiece(int rank, int file) {
-		try {
-			return getPiece(new Location(rank, file));
-		} catch (RuntimeException e) {
-			return null;
-		}
+		return getPiece(new Location(rank, file));
 	}
 	
 	/**
@@ -423,10 +420,36 @@ public class Board {
 	
 	private void getPawnMove(Location loc, ArrayList<Move> moves) {
 		if(sideToMove == ColorType.WHITE) {
+			if(getPiece(loc.add(0, -1)) == null) {
+				moves.add(new Move(this, loc, loc.add(0, -1), false));
+				if(loc.getFile() == 6 && getPiece(loc.add(0, -2)) == null) {
+					moves.add(new Move(this, loc, loc.add(0, -2), true)); // en pesant
+				}
+			}
 			
+			//captures sideways
+			if(checkPiece(sideToMove, loc.add(-1, -1)))
+				moves.add(new Move(this, loc, loc.add(-1, -1), false));
+			if(checkPiece(sideToMove, loc.add(1, -1)))
+				moves.add(new Move(this, loc, loc.add(1, -1), false));
 		} else {
+			if(getPiece(loc.add(0, 1)) == null) {
+				moves.add(new Move(this, loc, loc.add(0, 1), false));
+				if(loc.getFile() == 6 && getPiece(loc.add(0, 2)) == null) {
+					moves.add(new Move(this, loc, loc.add(0, 2), true)); // en pesant
+				}
+			}
 			
+			if(checkPiece(sideToMove, loc.add(-1, 1)))
+				moves.add(new Move(this, loc, loc.add(-1, 1), false));
+			if(checkPiece(sideToMove, loc.add(1, 1)))
+				moves.add(new Move(this, loc, loc.add(1, 1), false));
 		}
+	}
+	
+	private boolean checkPiece(ColorType type, Location loc) {
+		Piece piece = getPiece(loc);
+		return piece != null && piece.getColor() == type;
 	}
 	
 	/**
