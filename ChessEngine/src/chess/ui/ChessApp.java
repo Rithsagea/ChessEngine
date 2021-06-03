@@ -66,8 +66,23 @@ public class ChessApp extends PApplet {
 			f--;
 		}
 		
-		fill(255, 0, 0); //might wanna change color (looks bad)
+		
+		//light box rgb: 240, 217, 181
+		//dark box rgb: 181, 136, 99
+		
+		
+		fill(255, 100, 100); //might wanna change color (looks bad)
 		textSize(30);
 		text(locAsString, mouseX, mouseY);
+		
+		int temp = 0;
+		for(int i = 10; i < 720; i += 100) {
+			if(temp % 2 == 0)
+				fill(240, 217, 181);
+			else
+				fill(181, 136, 99);
+			text(temp+1, i, 790);
+			temp++;
+		}
 	}
 }
