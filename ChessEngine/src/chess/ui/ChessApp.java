@@ -38,8 +38,8 @@ public class ChessApp extends PApplet {
 		
 		Piece piece;
 		Location location;
-		for(int x = 7; x >= 0; x--) {
-			for(int y = 7; y >= 0; y--) {
+		for(int x = 0; x < 8; x++) {
+			for(int y = 0; y < 8; y++) {
 				location = new Location(y, x);
 				piece = board.getPiece(location);
 				if(piece != null)
@@ -66,6 +66,7 @@ public class ChessApp extends PApplet {
 			r++;
 		}
 		
+		fill(255, 0, 0); //might wanna change color (looks bad)
 		textSize(30);
 		text(locAsString, mouseX, mouseY);
 	}
