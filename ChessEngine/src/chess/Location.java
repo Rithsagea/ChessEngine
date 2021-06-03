@@ -50,7 +50,7 @@ public class Location {
 	}
 	
 	public String toString() {
-		return String.format("%c%d", 'h' - file, 8 - rank);
+		return String.format("%c%d", 'a' + file, 8 - rank);
 	}
 	
 	/**

@@ -9,7 +9,7 @@ public class Board {
 	
 	public static final int MAX_RANKS = 8;
 	public static final int MAX_FILES = 8;
-	public static final String START_FEN = "rnbkqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBKQBNR w KQkq - 0 0";
+	public static final String START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 	
 	private Piece[][] board;
 	private ColorType sideToMove;
@@ -444,9 +444,9 @@ public class Board {
 			if(checkPiece(sideToMove, loc.add(-1, -1)))
 				pawnMove(moves, sideToMove, loc, loc.add(-1, -1), false);
 		} else {
-			if(getPiece(loc.add(0, 1)) == null) {
+			if(getPiece(loc.add(1, 0)) == null) {
 				pawnMove(moves, sideToMove, loc, loc.add(1, 0), false);
-				if(loc.getRank() == 6 && getPiece(loc.add(2, 0)) == null) {
+				if(loc.getRank() == 1 && getPiece(loc.add(2, 0)) == null) {
 					moves.add(new Move(this, loc, loc.add(2, 0), true)); // en pesant
 				}
 			}

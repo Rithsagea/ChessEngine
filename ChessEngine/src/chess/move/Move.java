@@ -109,9 +109,9 @@ public class Move {
 		
 		if(enPassant) {
 			if(piece.getColor() == ColorType.WHITE) 
-				board.setEnPassant(new Location(start.getRank(), 5));
+				board.setEnPassant(new Location(5, start.getFile()));
 			if(piece.getColor() == ColorType.BLACK)
-				board.setEnPassant(new Location(start.getRank(), 2));
+				board.setEnPassant(new Location(2, start.getFile()));
 		} else {
 			board.setEnPassant(null);
 		}	
