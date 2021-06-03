@@ -1,13 +1,19 @@
-package chess;
+package chess.move;
+
+import chess.Board;
+import chess.ColorType;
+import chess.Location;
+import chess.Piece;
+import chess.PieceType;
 
 public class Move {
 
-	private boolean legal;
-	private boolean enPassant;
-	private Piece capture;
-	private Piece piece;
-	private Location start;
-	private Location end;
+	protected boolean legal;
+	protected boolean enPassant;
+	protected Piece capture;
+	protected Piece piece;
+	protected Location start;
+	protected Location end;
 	
 	/**
 	 * Initializes a new chess move
@@ -33,8 +39,7 @@ public class Move {
 			return;
 		}
 		
-		//try the move to see if it results in own king in check
-		board.setPiece(end, board.getPiece(start));
+		board.setPiece(end, piece);
 		board.setPiece(start, null);
 		
 		legal = !board.isCheck(board.getSideToMove());
@@ -99,7 +104,7 @@ public class Move {
 	 * @param board the board to make this move on
 	 */
 	public void executeMove(Board board) {
-		board.setPiece(end, board.getPiece(start));
+		board.setPiece(end, piece);
 		board.setPiece(start, null);
 		
 		if(enPassant) {
