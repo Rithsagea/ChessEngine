@@ -49,11 +49,11 @@ public class ChessApp extends PApplet {
 		
 		String locAsString = "";
 		
-		int r = 0, f = 0;
+		int f = 7, r = 0;
 		
-		Location loc = new Location(r, f);
+		Location loc = new Location(f, r);
 		for(int i = 0; i < 800; i += 100) {
-			f = 0;
+			r = 0;
 			for(int j = 0; j < 800; j += 100) { 
 				if(mouseX >= i && mouseX <= i + 100) {
 					if(mouseY >= j && mouseY <= j + 100) {
@@ -61,9 +61,9 @@ public class ChessApp extends PApplet {
 						locAsString = loc.toString();
 					}
 				}
-				f++;
+				r++;
 			}
-			r++;
+			f--;
 		}
 		
 		fill(255, 0, 0); //might wanna change color (looks bad)
