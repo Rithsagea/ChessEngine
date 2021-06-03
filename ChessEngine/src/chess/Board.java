@@ -2,6 +2,9 @@ package chess;
 
 import java.util.ArrayList;
 
+import chess.move.Move;
+import chess.move.PromoteMove;
+
 public class Board {
 	
 	public static final int MAX_RANKS = 8;
@@ -429,7 +432,7 @@ public class Board {
 	private void getPawnMove(Location loc, ArrayList<Move> moves) {
 		if(sideToMove == ColorType.WHITE) {
 			if(getPiece(loc.add(-1, 0)) == null) {
-				moves.add(new Move(this, loc, loc.add(-1, 0), false));
+				pawnMove(moves, sideToMove, loc, loc.add(-1, 0), false);
 				if(loc.getRank() == 6 && getPiece(loc.add(-2, 0)) == null) {
 					moves.add(new Move(this, loc, loc.add(-2, 0), true)); // en pesant
 				}
@@ -437,21 +440,32 @@ public class Board {
 			
 			//captures sideways
 			if(checkPiece(sideToMove, loc.add(-1, 1)))
-				moves.add(new Move(this, loc, loc.add(-1, 1), false));
+				pawnMove(moves, sideToMove, loc, loc.add(-1, 1), false);
 			if(checkPiece(sideToMove, loc.add(-1, -1)))
-				moves.add(new Move(this, loc, loc.add(-1, -1), false));
+				pawnMove(moves, sideToMove, loc, loc.add(-1, -1), false);
 		} else {
 			if(getPiece(loc.add(0, 1)) == null) {
-				moves.add(new Move(this, loc, loc.add(1, 0), false));
+				pawnMove(moves, sideToMove, loc, loc.add(1, 0), false);
 				if(loc.getRank() == 6 && getPiece(loc.add(2, 0)) == null) {
 					moves.add(new Move(this, loc, loc.add(2, 0), true)); // en pesant
 				}
 			}
 			
 			if(checkPiece(sideToMove, loc.add(1, 1)))
-				moves.add(new Move(this, loc, loc.add(1, 1), false));
+				pawnMove(moves, sideToMove, loc, loc.add(1, 1), false);
 			if(checkPiece(sideToMove, loc.add(1, -1)))
-				moves.add(new Move(this, loc, loc.add(1, -1), false));
+				pawnMove(moves, sideToMove, loc, loc.add(1, -1), false);
+		}
+	}
+
+	private void pawnMove(ArrayList<Move> moves, ColorType color, Location start, Location end, boolean enPassant) {
+		if(end.getRank() == (color == ColorType.WHITE ? 0 : 7)) {
+			moves.add(new PromoteMove(this, start, end, PieceType.QUEEN));
+			moves.add(new PromoteMove(this, start, end, PieceType.ROOK));
+			moves.add(new PromoteMove(this, start, end, PieceType.KNIGHT));
+			moves.add(new PromoteMove(this, start, end, PieceType.BISHOP));
+		} else {
+			moves.add(new Move(this, start, end, enPassant));
 		}
 	}
 	
