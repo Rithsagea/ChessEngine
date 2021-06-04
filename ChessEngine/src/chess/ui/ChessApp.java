@@ -34,9 +34,13 @@ public class ChessApp extends PApplet {
 	
 	@Override
 	public void draw() {
-		image(rsc.getBackground(), 0, 0);
-		
-		//rank and file
+		background();
+		rankAndFile();
+		setPieces();
+		showMouseLocation();
+	}
+	
+	public void rankAndFile() {
 		int temp = 0;
 		for(int i = 10; i < 720; i += 100) {
 			if(temp % 2 == 0)
@@ -56,8 +60,13 @@ public class ChessApp extends PApplet {
 			text(str, 777, i);
 			asciiVal++;
 		}
-		
-		//setting of pieces
+	}
+	
+	public void background() {
+		image(rsc.getBackground(), 0, 0);
+	}
+	
+	public void setPieces() {
 		Piece piece;
 		Location location;
 		for(int x = 0; x < 8; x++) {
@@ -68,10 +77,11 @@ public class ChessApp extends PApplet {
 					image(rsc.getIcon(piece), WIDTH / 8 * x, HEIGHT / 8 * y);
 			}
 		}
-		
-		//get rank and file from mouse location
+	}
+	
+	public void showMouseLocation() {
 		String locAsString = "";
-		int f = 7, r = 0;
+		int f = 0, r = 0;
 		
 		Location loc = new Location(f, r);
 		for(int i = 0; i < 800; i += 100) {
@@ -85,7 +95,7 @@ public class ChessApp extends PApplet {
 				}
 				r++;
 			}
-			f--;
+			f++;
 		}
 		
 		
@@ -93,8 +103,9 @@ public class ChessApp extends PApplet {
 		//dark box rgb: 181, 136, 99
 		
 		
-		fill(255, 100, 100); //might wanna change color (looks bad)
+		fill(19, 44, 209); 
 		textSize(30);
 		text(locAsString, mouseX, mouseY);
 	}
+	
 }
