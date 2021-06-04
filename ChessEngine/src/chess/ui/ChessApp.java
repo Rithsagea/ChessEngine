@@ -41,24 +41,36 @@ public class ChessApp extends PApplet {
 	}
 	
 	public void rankAndFile() {
-		int temp = 0;
-		for(int i = 10; i < 720; i += 100) {
-			if(temp % 2 == 0)
-				fill(240, 217, 181);
-			else
-				fill(181, 136, 99);
-			text(temp+1, i, 790);
-			temp++;
-		}
+		//letters
+//		int temp = 0;
+//		for(int i = 10; i < 720; i += 100) {
+//			if(temp % 2 == 0)
+//				fill(240, 217, 181);
+//			else
+//				fill(181, 136, 99);
+//			text(temp+1, i, 790);
+//			temp++;
+//		}
+		
 		char asciiVal = 97;
-		for(int i = 790; i >= 90; i -= 100) {
-			if(asciiVal % 2 != 0)
+		for(int i = 10; i < 720; i += 100) {
+			if(asciiVal % 2 != 0) 
+				fill(240, 217, 181);
+			else
+				fill(181, 136, 99);
+			String str = new Character((char) asciiVal).toString();
+			text(str, i, 790);
+			asciiVal++;
+		}
+		//numbers
+		int temp = 0;
+		for(int i = 730; i >= 30; i -= 100) {
+			if(temp % 2 == 0) 
 				fill(181, 136, 99);
 			else
 				fill(240, 217, 181);
-			String str = new Character((char) asciiVal).toString();
-			text(str, 777, i);
-			asciiVal++;
+			text(temp+1, 777, i);
+			temp++;
 		}
 	}
 	
