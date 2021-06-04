@@ -27,7 +27,7 @@ public class BoardTest {
 	}
 	
 	public static void main(String[] args) {
-		board = new Board();
+		board = new Board("r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 6 4");
 		Scanner scanner = new Scanner(System.in);
 		
 		while(true) {
