@@ -123,7 +123,7 @@ public class Move {
 				board.setEnPassant(new Location(2, start.getFile()));
 		} else {
 			board.setEnPassant(null);
-		}	
+		}
 	}
 	
 	public String toString() {

@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 
+import chess.move.CastleMove;
 import chess.move.Move;
 import chess.move.PromoteMove;
 
@@ -480,6 +481,12 @@ public class Board {
 		moves.add(new Move(this, loc, loc.add(-1, -1), false));
 		
 		//TODO: Castling
+		if((sideToMove == ColorType.WHITE && whiteCastleQueen) ||
+			(sideToMove == ColorType.BLACK && blackCastleQueen))
+			moves.add(new CastleMove(this, loc, loc.add(0, -2), true));
+		if((sideToMove == ColorType.WHITE && whiteCastleKing) ||
+				(sideToMove == ColorType.BLACK && blackCastleKing))
+			moves.add(new CastleMove(this, loc, loc.add(0, 2), false));
 	}
 	
 	private boolean checkPiece(ColorType type, Location loc) {
@@ -496,6 +503,30 @@ public class Board {
 		if(!move.isLegal()) return false;
 		
 		move.executeMove(this);
+		
+		if(move.getPiece().getType() == PieceType.KING) {
+			if(sideToMove == ColorType.WHITE) {
+				whiteCastleKing = false;
+				whiteCastleQueen = false;
+			} else {
+				blackCastleKing = false;
+				blackCastleQueen = false;
+			}
+		}
+		
+		if(move.getPiece().getType() == PieceType.ROOK) {
+			if(sideToMove == ColorType.WHITE) {
+				if(move.getStart().getFile() == 0)
+					whiteCastleQueen = false;
+				if(move.getStart().getFile() == 7)
+					whiteCastleKing = false;
+			} else {
+				if(move.getStart().getFile() == 0)
+					blackCastleQueen = false;
+				if(move.getStart().getFile() == 7)
+					blackCastleKing = false;
+			}
+		}
 		
 		if(move.getCapture() != null) halfMoves = 0;
 		else halfMoves++;
