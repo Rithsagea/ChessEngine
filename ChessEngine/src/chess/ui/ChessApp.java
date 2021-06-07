@@ -34,30 +34,51 @@ public class ChessApp extends PApplet {
 	
 	@Override
 	public void draw() {
-		image(rsc.getBackground(), 0, 0);
+		background();
+		rankAndFile();
+		setPieces();
+		showMouseLocation();
+	}
+	
+	public void rankAndFile() {
+		//letters
+//		int temp = 0;
+//		for(int i = 10; i < 720; i += 100) {
+//			if(temp % 2 == 0)
+//				fill(240, 217, 181);
+//			else
+//				fill(181, 136, 99);
+//			text(temp+1, i, 790);
+//			temp++;
+//		}
 		
-		//rank and file
-		int temp = 0;
-		for(int i = 10; i < 720; i += 100) {
-			if(temp % 2 == 0)
-				fill(240, 217, 181);
-			else
-				fill(181, 136, 99);
-			text(temp+1, i, 790);
-			temp++;
-		}
 		char asciiVal = 97;
-		for(int i = 790; i >= 90; i -= 100) {
-			if(asciiVal % 2 != 0)
-				fill(181, 136, 99);
-			else
+		for(int i = 10; i < 720; i += 100) {
+			if(asciiVal % 2 != 0) 
 				fill(240, 217, 181);
+			else
+				fill(181, 136, 99);
 			String str = new Character((char) asciiVal).toString();
-			text(str, 777, i);
+			text(str, i, 790);
 			asciiVal++;
 		}
-		
-		//setting of pieces
+		//numbers
+		int temp = 0;
+		for(int i = 730; i >= 30; i -= 100) {
+			if(temp % 2 == 0) 
+				fill(181, 136, 99);
+			else
+				fill(240, 217, 181);
+			text(temp+1, 777, i);
+			temp++;
+		}
+	}
+	
+	public void background() {
+		image(rsc.getBackground(), 0, 0);
+	}
+	
+	public void setPieces() {
 		Piece piece;
 		Location location;
 		for(int x = 0; x < 8; x++) {
@@ -68,10 +89,11 @@ public class ChessApp extends PApplet {
 					image(rsc.getIcon(piece), WIDTH / 8 * x, HEIGHT / 8 * y);
 			}
 		}
-		
-		//get rank and file from mouse location
+	}
+	
+	public void showMouseLocation() {
 		String locAsString = "";
-		int f = 7, r = 0;
+		int f = 0, r = 0;
 		
 		Location loc = new Location(f, r);
 		for(int i = 0; i < 800; i += 100) {
@@ -85,7 +107,7 @@ public class ChessApp extends PApplet {
 				}
 				r++;
 			}
-			f--;
+			f++;
 		}
 		
 		
@@ -93,8 +115,9 @@ public class ChessApp extends PApplet {
 		//dark box rgb: 181, 136, 99
 		
 		
-		fill(255, 100, 100); //might wanna change color (looks bad)
+		fill(19, 44, 209); 
 		textSize(30);
 		text(locAsString, mouseX, mouseY);
 	}
+	
 }
