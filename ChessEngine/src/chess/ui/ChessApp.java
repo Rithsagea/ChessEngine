@@ -3,6 +3,7 @@ package chess.ui;
 import java.util.ArrayList;
 
 import chess.Board;
+import chess.ColorType;
 import chess.Location;
 import chess.Piece;
 import chess.move.Move;
@@ -22,7 +23,6 @@ public class ChessApp extends PApplet {
 	
 	//data
 	private Board board;
-	private boolean flipped = false;
 	private Location selectedLocation = null;
 	private ArrayList<Move> selectedMoves;
 	
@@ -61,6 +61,15 @@ public class ChessApp extends PApplet {
 						board.makeMove(move);
 						selectedLocation = null;
 						selectedMoves.clear();
+						if(board.getValidMoves().isEmpty()) {
+							if(board.isCheck(board.getSideToMove())) {
+								System.out.println(ColorType.getInverse(board.getSideToMove()).name() + " is victorious!");
+							} else {
+								System.out.println("Stalemate!");
+							}
+							System.exit(0);
+							//checkmate
+						}
 						return;
 					}
 				}

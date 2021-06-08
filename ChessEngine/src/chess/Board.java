@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 
 import chess.move.CastleMove;
+import chess.move.EnPassantMove;
 import chess.move.Move;
 import chess.move.PromoteMove;
 
@@ -444,6 +445,11 @@ public class Board {
 				pawnMove(moves, sideToMove, loc, loc.add(-1, 1), false);
 			if(checkPiece(sideToMove, loc.add(-1, -1)))
 				pawnMove(moves, sideToMove, loc, loc.add(-1, -1), false);
+			
+			if(loc.add(-1, 1).equals(enPassant))
+				moves.add(new EnPassantMove(this, loc, loc.add(-1, 1)));
+			if(loc.add(-1, -1).equals(enPassant))
+				moves.add(new EnPassantMove(this, loc, loc.add(-1, -1)));
 		} else {
 			if(getPiece(loc.add(1, 0)) == null) {
 				pawnMove(moves, sideToMove, loc, loc.add(1, 0), false);
@@ -456,6 +462,11 @@ public class Board {
 				pawnMove(moves, sideToMove, loc, loc.add(1, 1), false);
 			if(checkPiece(sideToMove, loc.add(1, -1)))
 				pawnMove(moves, sideToMove, loc, loc.add(1, -1), false);
+			
+			if(loc.add(1, 1).equals(enPassant))
+				moves.add(new EnPassantMove(this, loc, loc.add(1, 1)));
+			if(loc.add(1, -1).equals(enPassant))
+				moves.add(new EnPassantMove(this, loc, loc.add(1, -1)));
 		}
 	}
 
@@ -491,7 +502,7 @@ public class Board {
 	
 	private boolean checkPiece(ColorType type, Location loc) {
 		Piece piece = getPiece(loc);
-		return piece != null && piece.getColor() == type;
+		return piece != null && piece.getColor() != type;
 	}
 	
 	/**
