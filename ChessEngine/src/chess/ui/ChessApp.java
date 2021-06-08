@@ -1,8 +1,11 @@
 package chess.ui;
 
+import java.util.ArrayList;
+
 import chess.Board;
 import chess.Location;
 import chess.Piece;
+import chess.move.Move;
 import processing.core.PApplet;
 
 public class ChessApp extends PApplet {
@@ -20,6 +23,8 @@ public class ChessApp extends PApplet {
 	//data
 	private Board board;
 	private boolean flipped = false;
+	private Location selectedLocation = null;
+	private ArrayList<Move> selectedMoves;
 	
 	@Override
 	public void settings() {
@@ -31,18 +36,54 @@ public class ChessApp extends PApplet {
 		rsc = new ChessResources(this);
 		
 		board = new Board();
+		selectedMoves = new ArrayList<>();
 	}
 	
 	@Override
 	public void draw() {
 		background();
 		rankAndFile();
+		highlightSquare();
 		setPieces();
 		showMouseLocation();
 	}
 	
+	@Override
+	public void mouseClicked() {
+		Location loc = getMouseLocation();
+		if(!loc.equals(selectedLocation)) {
+			if(selectedLocation == null) {
+				selectLocation(loc);
+			} else {
+				for(Move move : selectedMoves) {
+					if(move.getEnd().equals(loc)) {
+						System.out.println(move);
+						board.makeMove(move);
+						selectedLocation = null;
+						selectedMoves.clear();
+						return;
+					}
+				}
+				
+				selectLocation(loc);
+			}
+		}
+	}
+	
+	public void selectLocation(Location loc) {
+		selectedMoves.clear();
+		selectedLocation = loc;
+		for(Move move : board.getValidMoves()) {
+			if(move.getStart().equals(selectedLocation)) {
+				selectedMoves.add(move);
+			}
+		}
+		
+		if(selectedMoves.isEmpty())
+			selectedLocation = null;
+	}
+	
 	public void rankAndFile() {
-
 		//letters		
 		char asciiVal = 97;
 		for(int i = 10; i < 720; i += 100) {
@@ -94,4 +135,20 @@ public class ChessApp extends PApplet {
 		text(getMouseLocation().toString(), mouseX, mouseY);
 	}
 	
+	public void highlightSquare() {
+		if(selectedLocation == null) return;
+		noStroke();
+		fill(250, 92, 52);
+		highlight(selectedLocation);
+		
+		fill(79, 255, 79);
+		for(Move move : selectedMoves) {
+			highlight(move.getEnd());
+		}
+	}
+	
+	public void highlight(Location loc) {
+		ellipse(loc.getFile() * 100f + 50,
+				loc.getRank() * 100f + 50, 75f, 75f);
+	}
 }

@@ -65,4 +65,13 @@ public class Location {
 			return null;
 		}
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Location) {
+			Location loc = (Location) obj;
+			return rank == loc.rank && file == loc.file;
+		}
+		return false;
+	}
 }

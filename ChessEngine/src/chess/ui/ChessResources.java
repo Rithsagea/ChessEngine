@@ -1,5 +1,6 @@
 package chess.ui;
 
+import chess.ColorType;
 import chess.Piece;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -29,7 +30,10 @@ public class ChessResources{
 	}
 	
 	public PImage getIcon(Piece piece) {
-		return pieces[piece.getColor().ordinal()][piece.getType().ordinal()];
+		if(piece.getColor() == ColorType.WHITE)
+			return pieces[0][piece.getType().ordinal()];
+		else
+			return pieces[1][piece.getType().ordinal()];
 	}
 	
 	public PImage getBackground() {
