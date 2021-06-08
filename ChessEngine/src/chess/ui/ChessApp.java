@@ -40,18 +40,31 @@ public class ChessApp extends PApplet {
 		showMouseLocation();
 	}
 	
+	public boolean askUserForColor() {
+		if(mousePressed) {
+			if(mouseX >= 100 && mouseX <= 300 && mouseY >= 400 && mouseY <= 500) {
+				//returns false for black picked
+				return false;
+			}
+			if(mouseX >= 400 && mouseX <= 700 && mouseY >= 400 && mouseY <= 500) {
+				//return true for white
+				return true;
+			}
+		}
+		return true;
+	}
+	
+	public void switchToColor() {
+		if(askUserForColor()) {
+			
+		}
+		else {
+			
+		}
+	}
+	
 	public void rankAndFile() {
-		//letters
-//		int temp = 0;
-//		for(int i = 10; i < 720; i += 100) {
-//			if(temp % 2 == 0)
-//				fill(240, 217, 181);
-//			else
-//				fill(181, 136, 99);
-//			text(temp+1, i, 790);
-//			temp++;
-//		}
-		
+		//letters		
 		char asciiVal = 97;
 		for(int i = 10; i < 720; i += 100) {
 			if(asciiVal % 2 != 0) 
@@ -113,7 +126,6 @@ public class ChessApp extends PApplet {
 		
 		//light box rgb: 240, 217, 181
 		//dark box rgb: 181, 136, 99
-		
 		
 		fill(19, 44, 209); 
 		textSize(30);
