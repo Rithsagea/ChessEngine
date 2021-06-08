@@ -19,6 +19,7 @@ public class ChessApp extends PApplet {
 	
 	//data
 	private Board board;
+	private boolean flipped = false;
 	
 	@Override
 	public void settings() {
@@ -41,17 +42,8 @@ public class ChessApp extends PApplet {
 	}
 	
 	public void rankAndFile() {
-		//letters
-//		int temp = 0;
-//		for(int i = 10; i < 720; i += 100) {
-//			if(temp % 2 == 0)
-//				fill(240, 217, 181);
-//			else
-//				fill(181, 136, 99);
-//			text(temp+1, i, 790);
-//			temp++;
-//		}
-		
+
+		//letters		
 		char asciiVal = 97;
 		for(int i = 10; i < 720; i += 100) {
 			if(asciiVal % 2 != 0) 
@@ -69,8 +61,7 @@ public class ChessApp extends PApplet {
 				fill(181, 136, 99);
 			else
 				fill(240, 217, 181);
-			text(temp+1, 777, i);
-			temp++;
+			text(++temp, 777, i);
 		}
 	}
 	
@@ -91,33 +82,16 @@ public class ChessApp extends PApplet {
 		}
 	}
 	
+	public Location getMouseLocation() {
+		return new Location(mouseY / 100, mouseX / 100);
+	}
+	
 	public void showMouseLocation() {
-		String locAsString = "";
-		int f = 0, r = 0;
-		
-		Location loc = new Location(f, r);
-		for(int i = 0; i < 800; i += 100) {
-			r = 0;
-			for(int j = 0; j < 800; j += 100) { 
-				if(mouseX >= i && mouseX <= i + 100) {
-					if(mouseY >= j && mouseY <= j + 100) {
-						loc = new Location(r, f);
-						locAsString = loc.toString();
-					}
-				}
-				r++;
-			}
-			f++;
-		}
-		
-		
 		//light box rgb: 240, 217, 181
 		//dark box rgb: 181, 136, 99
-		
-		
 		fill(19, 44, 209); 
 		textSize(30);
-		text(locAsString, mouseX, mouseY);
+		text(getMouseLocation().toString(), mouseX, mouseY);
 	}
 	
 }
