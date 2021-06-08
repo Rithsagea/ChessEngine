@@ -71,7 +71,7 @@ public class ChessApp extends PApplet {
 				fill(240, 217, 181);
 			else
 				fill(181, 136, 99);
-			String str = new Character((char) asciiVal).toString();
+			String str = "" + asciiVal;
 			text(str, i, 790);
 			asciiVal++;
 		}

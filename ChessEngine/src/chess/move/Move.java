@@ -15,6 +15,8 @@ public class Move {
 	protected Location start;
 	protected Location end;
 	
+	protected Board board;
+	
 	/**
 	 * Initializes a new chess move
 	 * 
@@ -29,6 +31,7 @@ public class Move {
 		this.start = start;
 		this.end = end;
 		this.enPassant = enPassant;
+		this.board = board;
 		
 		piece = board.getPiece(start);
 		capture = board.getPiece(end);
@@ -39,11 +42,17 @@ public class Move {
 			return;
 		}
 		
-		board.setPiece(end, piece);
+		checkSquare(end);
+	}
+	
+	protected void checkSquare(Location loc) {
+		Piece temp = board.getPiece(loc);
+		
+		board.setPiece(loc, piece);
 		board.setPiece(start, null);
 		
 		legal = !board.isCheck(board.getSideToMove());
-		board.setPiece(end, capture);
+		board.setPiece(loc, temp);
 		board.setPiece(start, piece);
 	}
 	
@@ -114,7 +123,7 @@ public class Move {
 				board.setEnPassant(new Location(2, start.getFile()));
 		} else {
 			board.setEnPassant(null);
-		}	
+		}
 	}
 	
 	public String toString() {
